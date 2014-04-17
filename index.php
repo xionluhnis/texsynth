@@ -42,8 +42,8 @@ switch($target) {
 }
 
 // render!
-$twig->render($target, $env);
+$twig->display($target, $env);
 
 ?>
 
-<!-- hello -->
+<!-- with twig, by Alexandre Kaspar -->
