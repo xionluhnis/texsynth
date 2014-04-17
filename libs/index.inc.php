@@ -64,7 +64,8 @@ function get_file_content($file) {
 }
 function get_event_title($event_dir, $def_title) {
   $title = get_file_content($event_dir . '/title.dat');
-  return empty($title) ? $def_title : $title;
+  $short = trim($title);
+  return empty($short) ? $def_title : $title;
 }
 
 function get_months(){
