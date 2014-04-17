@@ -1,1 +1,16 @@
 {% extends "base.html" %}
+
+{% block head %}
+{{ parent() }}
+<link rel="stylesheet" href="style/page.css" />
+{% endblock %}
+
+{% block page %}
+<a href="." id="back_index">Index</a>
+<h1>{{ title }}</h1>
+<section id="text">
+  {{ text }}
+</section>
+<section id="options">
+</section>
+{% endblock %}

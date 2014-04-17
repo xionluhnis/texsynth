@@ -1,0 +1,28 @@
+a#back_index {
+  width: 80px;
+  height: 50px;
+  display: block;
+  position: absolute;
+  background: white;
+  margin-left: -131px;
+  margin-top: 25px;
+  text-align: center;
+  line-height: 50px;
+  text-decoration: none;
+  color: gray;
+  font-weight: bold;
+  box-shadow: -10px 0 50px #ccc;
+  border-right: 1px dotted silver;
+}
+a#back_index:hover {
+  color: #333;
+}
+a#back_index:after {
+  position: absolute;
+  content: ' ';
+  right: -20px;
+  bottom: -10px;
+  top: -10px;
+  width: 19px;
+  background-color: white;
+}

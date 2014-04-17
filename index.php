@@ -31,13 +31,15 @@ $env = array(
 );
 
 include_once 'libs/index.inc.php';
+include_once 'libs/page.inc.php';
 
 switch($target) {
   case 'index.html':
     $env['months'] = get_months();
     break;
   case 'page.html':
-    
+    $env['text']  = get_event_text($path);
+    $env['title'] = get_event_title($path, 'Synthesis: ' . $path);
     break;
 }
 
