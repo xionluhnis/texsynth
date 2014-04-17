@@ -1,0 +1,107 @@
+html, body {
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  font-size: 11pt;
+}
+body {
+  background-image: url(pattern.jpg);
+}
+#page {
+  width: 700px;
+  margin: 20px auto;
+  background: white;
+  min-height: 500px;
+  box-shadow: 0 0 50px #999;
+  padding: 10px 50px;
+}
+h1 {
+  color: #E6A801;
+  text-shadow: 1px 1px 1px #C66801;
+  font-size: 2.5em;
+  width: 100%;
+  overflow: hidden;
+}
+h1:before, h1:after {
+  height: 1px;
+  display: inline-block;
+  content: ' ';
+  background-color: #ccc;
+}
+h1:before {
+  margin-right: 20px;
+  width: 30px;
+}
+h1:after {
+  width: 0;
+}
+
+section {
+  width: 100%;
+  min-height: 20px;
+  background: #f0f0f0;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+ul {
+  list-style: none;
+}
+#results {
+  font-size: 1.5em;
+}
+#results > ul {
+  margin: 10px 0;
+  padding: 0 30px;
+}
+li.month {
+  display: table;
+  margin: 20px 0;
+}
+li .month {
+  display: table-cell;
+  width: 100px;
+  font-weight: bold;
+  float: right;
+  text-align: right;
+}
+.month ul {
+  display: table-cell;
+  width: 100%;
+}
+.month li {
+  display: inline-block;
+  background: #fff;
+  color: #999;
+  border: 1px dotted silver;
+  padding: 10px 15px;
+  margin: 10px;
+}
+.month li:hover {
+  border: 1px solid silver;
+}
+.month li span {
+  margin-right: 5px;
+}
+.month li a {
+  text-decoration: none;
+  color: #0086DF;
+}
+.month li a:hover {
+  text-decoration: underline;
+  color: #005A96;
+}
+footer {
+  width: 100%;
+  height: 20px;
+  text-align: center;
+  margin: 50px 0 30px;
+}
+footer a {
+  background-color: antiquewhite;
+  color: gray;
+  padding: 5px 10px;
+  text-decoration: none;
+}
+footer a:hover {
+  color: #333;
+}

@@ -1,0 +1,8 @@
+RewriteEngine on
+
+# page from gallery
+RewriteCond %{REQUEST_FILENAME} -d [OR]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^([0-9]{4})/([^/]+)/?$ index.php?path=$1/$2 [QSA,L]
+# page with parameters
+RewriteRule ^([0-9]{4})/([^/]+)/(.*)$ index.php?path=$1/$2&params=$3 [QSA,L]

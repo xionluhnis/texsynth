@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block page %}
+  <h1>Texture Synthesis Project</h1>
+  <section id="results">
+    <ul>
+    {% for month in months %} 
+      <li class="month">
+        <div class="month">{{ month.name }}</div>
+        <ul>
+        {% for date in month.dates %}
+          <li class="date">
+            <span>{{ date.day }}</span>
+            {% for event in date.events %}
+              {{ not loop.first ? ' | ' }}
+              <a href="{{ event.link }}" title="{{ event.title }}">{{ event.text }}</a>
+            {% endfor %}
+          </li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+    </ul>
+  </section>
+{% endblock %}
