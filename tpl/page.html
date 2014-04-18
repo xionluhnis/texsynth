@@ -10,11 +10,22 @@
 <link rel="stylesheet" href="libs/fancybox/source/jquery.fancybox.css" type="text/css" media="screen" />
 <script type="text/javascript" src="libs/fancybox/source/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
-  $(function(){
-      $('#images > a').fancybox({
-        nextEffect: 'none', prevEffect: 'none'
-      });
+// gallery
+$(function(){
+  $('#images > a').fancybox({
+    nextEffect: 'none', prevEffect: 'none'
   });
+});
+// our functions
+function paramSelect(targets, values) {
+  targets = [].concat(targets);
+  values = [].concat(values);
+  var path = "./{{ path }}/{{ class }}/";
+  for (var i = 0, n = targets.length; i < n; ++i) {
+    path += values.length ? targets[i] + ':' + values[i] + '/' : targets[i] + '/';
+  }
+  window.location.href = path;
+}
 </script>
 {% endblock %}
 
@@ -24,18 +35,40 @@
 <section id="text">
   {{ text | raw }}
 </section>
-{% set class = (attribute(params, "big") is defined ? "big" : "small") %}
 <section id="params" class="{{ class }}">
-  <a href="./{{ path }}/big" class="big">Big</a>
-  <a href="./{{ path }}/small" class="small">Small</a>
+  {% if 'big'   in options %} <a href="./{{ path }}/big" class="big">Big</a>{% endif %}
+  {% if 'small' in options %} <a href="./{{ path }}/small" class="small">Small</a>{% endif %}
+  {% if 'list'  in options %}
+    <a href="./{{ path }}/list" class="list">List</a>
+  {% endif %}
+  {% if 'video' in options %}
+    <a href="./{{ path }}/" class="video">Video</a>
+  {% endif %}
 </section>
-<section id="images" class="{{ class }}">
-{% for image in images %}
-  <a href="{{ image }}" rel="gallery" title="{{ image | filename }}"><img src="{{ image }}" title="{{ image | filename }}" /></a>
-{% else %}
-  <div id="noimages">
-    No image yet!
+<section id="images" class="{{ class }}{{ exemplar is defined ? ' ex' }}">
+{% if image_base is defined %}
+  <!-- single image with file selector -->
+  <div id="imselector">
+    <label for="image_base">Texture</label>
+    <select id="image_base" onchange="paramSelect('image_base', this.value);">
+    {% for opt_image in images %}
+      <option value="{{ opt_image | filename('-im') }}"{{ opt_image == image ? ' selected' }}>{{ opt_image | filename('-im') }}</option>
+    {% endfor %}
+    </select>
   </div>
-{% endfor %}
+  {% if exemplar is defined %}
+  <a href="{{ exemplar.file }}" rel="gallery" title="exemplar"><img src="{{ exemplar.file }}" title="exemplar" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }}" /></a>
+  {% endif %}
+  <a href="{{ image.file }}" rel="gallery" title="{{ image_base }}"><img src="{{ image.file }}" title="{{ image_base }}" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }}" /></a>
+{% else %}
+  <!-- many images -->
+  {% for image in images %}
+    <a href="{{ image }}" rel="gallery" title="{{ image | filename }}"><img src="{{ image }}" title="{{ image | filename }}" /></a>
+  {% else %}
+    <div id="noimages">
+      No image yet!
+    </div>
+  {% endfor %}
+{% endif %}
 </section>
 {% endblock %}

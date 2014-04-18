@@ -20,7 +20,19 @@ if (isset($_GET['path'])){
   $target = 'page.html';
 
   if (isset($_GET['params'])) {
-    parse_str($_GET['params'], $params);
+    // manually parse
+    $tokens = explode('/', $_GET['params']);
+    foreach($tokens as $token){
+      $token_parts = explode(':', $token, 2);
+      switch(count($token_parts)){
+      case 2:
+        $params[$token_parts[0]] = $token_parts[1];
+        break;
+      case 1:
+        $params[$token_parts[0]] = '';
+        break;
+      }
+    }
   }
 }
 
@@ -34,7 +46,8 @@ if (!preg_match('![0-9]{4}/.+!', $path) || !is_dir($path)){
 // set environment variables
 $env = array(
   'path' => $path,
-  'params' => $params
+  'params' => $params,
+  'options' => array('big', 'small')
 );
 
 include_once 'libs/index.inc.php';
@@ -49,21 +62,71 @@ switch($target) {
     $env['text']  = get_event_text($path);
     $env['title'] = get_event_title($path, 'Synthesis: ' . $path);
 
+    // load the display parameters
+    static $display_modes = array('big', 'small', 'list', 'video');
+    $env['class'] = 'small';
+    foreach($params as $pname => $pval){
+      if(in_array($pname, $display_modes)){
+        $env['class'] = $pname;
+        break;
+      }
+    }
+
     // load the event structure data
-    parse_str(get_file_content($path), $data);
+    parse_str(get_file_content($path . '/data.dat'), $data);
     $env['data']  = $data;
-    $type = array_key_exists($data, 'type') ? $data['type'] : 'single';
+    $type = array_key_exists('type', $data) ? trim($data['type']) : 'single';
 
     switch($type) {
       case 'single':
         $env['images'] = get_event_images($path);
         break;
+      case 'default':
+        $env['images'] = get_event_images($path, '-im'); // only select the ones with filename ending in -im
+        $env['options'][] = 'list';
+        switch($env['class']){
+          case 'list':
+            if(!empty($env['images'])){
+              // add the current picture
+              if(array_key_exists('image_base', $params)){
+                $base = $params['image_base'];
+                // find the image
+                foreach($env['images'] as $img){
+                  $file = pathinfo($img);
+                  if($file['filename'] === $base . '-im') {
+                    $env['image'] = get_imageinfo($img);
+                    $env['image_base'] = $base;
+                    break;
+                  }
+                }
+              } else {
+                $file = get_pathinfo(reset($env['images']));
+                $env['image'] = $file;
+                $name = $file['filename'];
+                $env['image_base'] = substr($name, 0, strlen($name) - 3); // remove -im
+              }
+              // Check for exemplar
+              $ex = get_image_exemplar($env['image']['file']);
+              if(!empty($ex)){
+                $env['exemplar'] = get_imageinfo($ex);
+              }
+            } else {
+              $env['class'] = 'small'; // revert else illconditioned
+            }
+            break;
+          default:
+        }
+        break;
     }
     break;
 }
 
-$twig->addFilter(new Twig_SimpleFilter('filename', function($file){
-  return pathinfo($file, PATHINFO_FILENAME);
+$twig->addFilter(new Twig_SimpleFilter('filename', function($file, $args){
+  $name = pathinfo($file, PATHINFO_FILENAME);
+  if(isset($args) && substr($name, -strlen($args)) === $args){
+    $name = substr($name, 0, -strlen($args));
+  }
+  return $name;
 }));
 
 // render!
