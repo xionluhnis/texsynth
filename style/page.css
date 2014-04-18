@@ -80,3 +80,6 @@ section a:hover {
 #images.small img {
   max-height: 64px;
 }
+#images #noimages {
+  margin: 30px auto;
+}
