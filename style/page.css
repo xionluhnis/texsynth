@@ -45,3 +45,38 @@ section a {
 section a:hover {
   color: #333;
 }
+
+/* params */
+#params {
+  text-align: center;
+}
+#params.big a.big, #params.small a.small{
+  color: black;
+  font-weight: bold;
+}
+
+/* images */
+#images {
+  text-align: center;
+}
+#images a {
+  text-align: center;
+}
+#images.big a {
+  display: block;
+  margin: 20px auto;
+}
+#images.small a {
+  display: inline-block;
+  margin: 20px;
+}
+#images img {
+  border: 1px solid white;
+  box-shadow: 0 0 20px gray;
+}
+#images.big img {
+  max-width: 800px;
+}
+#images.small img {
+  max-height: 64px;
+}

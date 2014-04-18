@@ -24,6 +24,13 @@ if (isset($_GET['path'])){
   }
 }
 
+// check the value of $path
+if (!preg_match('![0-9]{4}/.+!', $path) || !is_dir($path)){
+  // wrong path! /!\ could be a malicious user!
+  $target = 'index.html';
+  $path = '';
+}
+
 // set environment variables
 $env = array(
   'path' => $path,
@@ -38,10 +45,26 @@ switch($target) {
     $env['months'] = get_months();
     break;
   case 'page.html':
+    // the general event data
     $env['text']  = get_event_text($path);
     $env['title'] = get_event_title($path, 'Synthesis: ' . $path);
+
+    // load the event structure data
+    parse_str(get_file_content($path), $data);
+    $env['data']  = $data;
+    $type = array_key_exists($data, 'type') ? $data['type'] : 'single';
+
+    switch($type) {
+      case 'single':
+        $env['images'] = get_event_images($path);
+        break;
+    }
     break;
 }
+
+$twig->addFilter(new Twig_SimpleFilter('filename', function($file){
+  return pathinfo($file, PATHINFO_FILENAME);
+}));
 
 // render!
 $twig->display($target, $env);

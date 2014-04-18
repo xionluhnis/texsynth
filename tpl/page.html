@@ -2,7 +2,20 @@
 
 {% block head %}
 {{ parent() }}
+<!-- styles -->
 <link rel="stylesheet" href="style/page.css" />
+
+<!-- scripts -->
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+<link rel="stylesheet" href="libs/fancybox/source/jquery.fancybox.css" type="text/css" media="screen" />
+<script type="text/javascript" src="libs/fancybox/source/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+  $(function(){
+      $('#images > a').fancybox({
+        nextEffect: 'none', prevEffect: 'none'
+      });
+  });
+</script>
 {% endblock %}
 
 {% block page %}
@@ -11,6 +24,18 @@
 <section id="text">
   {{ text | raw }}
 </section>
-<section id="options">
+{% set class = (attribute(params, "big") is defined ? "big" : "small") %}
+<section id="params" class="{{ class }}">
+  <a href="./{{ path }}/big" class="big">Big</a>
+  <a href="./{{ path }}/small" class="small">Small</a>
+</section>
+<section id="images" class="{{ class }}">
+{% for image in images %}
+  <a href="{{ image }}" rel="gallery" title="{{ image | filename }}"><img src="{{ image }}" title="{{ image | filename }}" /></a>
+{% else %}
+  <div id="noimages">
+    No image yet!
+  </div>
+{% endfor %}
 </section>
 {% endblock %}

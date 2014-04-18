@@ -1,3 +1,6 @@
 [submodule "libs/parsedown"]
 	path = libs/parsedown
 	url = https://github.com/erusev/parsedown.git
+[submodule "libs/fancybox"]
+	path = libs/fancybox
+	url = https://github.com/fancyapps/fancyBox.git
