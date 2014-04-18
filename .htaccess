@@ -1,5 +1,11 @@
 RewriteEngine on
 
+# specify the base path
+RewriteBase /2014/texsynth/
+
+# file or potential file
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([0-9]{4})/([^/]+)/.+(dat|jpg|png)$ $1/$2/ [R]
 # page from gallery
 RewriteCond %{REQUEST_FILENAME} -d [OR]
 RewriteCond %{REQUEST_FILENAME} -f
