@@ -52,7 +52,7 @@ function paramSelect(targets, values) {
     <label for="image_base">Texture</label>
     <select id="image_base" onchange="paramSelect('image_base', this.value);">
     {% for opt_image in images %}
-      <option value="{{ opt_image | filename('-im') }}"{{ opt_image == image ? ' selected' }}>{{ opt_image | filename('-im') }}</option>
+    <option value="{{ opt_image | filename('-im') }}"{{ opt_image == image.file ? ' selected' }}>{{ opt_image | filename('-im') }}</option>
     {% endfor %}
     </select>
   </div>
