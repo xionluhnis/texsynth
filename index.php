@@ -81,6 +81,21 @@ switch($target) {
     // masks
     $env['has_masks'] = is_dir($path . '/masks');
 
+    // use of scales
+   if(is_dir($path . '/images/s1')) {
+     $env['options'][]  = 'scales';
+     $env['has_scales'] = true;
+     // list scales
+     $scale_dirs = glob($path . '/images/s*');
+     $env['scales'] = array();
+     foreach($scale_dirs as $s) {
+       $env['scales'][] = basename($s);
+     }
+     rsort($env['scales']);
+   } else {
+     $env['has_scales'] = false;
+   }
+
     switch($type) {
       case 'single':
         $env['images'] = get_event_images($path);
@@ -89,19 +104,6 @@ switch($target) {
       case 'default':
         $env['images'] = get_event_images($path, '-im'); // only select the ones with filename ending in -im
         $env['options'][] = 'list';
-
-        // use of scales
-        if(is_dir($path . '/images/s1')) {
-          $env['options'][]  = 'scales';
-          $env['has_scales'] = true;
-          // list scales
-          $scale_dirs = glob($path . '/images/s*');
-          $env['scales'] = array();
-          foreach($scale_dirs as $s) {
-            $env['scales'][] = basename($s);
-          }
-          rsort($env['scales']);
-        }
 
         // class-dependent data
         switch($env['class']){

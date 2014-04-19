@@ -10,6 +10,19 @@
 <link rel="stylesheet" href="libs/fancybox/source/jquery.fancybox.css" type="text/css" media="screen" />
 <script type="text/javascript" src="libs/fancybox/source/jquery.fancybox.pack.js"></script>
 <script type="text/javascript">
+// data
+var offline_targets = [];
+var offline_values  = [];
+var use_masks = {{ attribute(params, 'use_masks') is defined ? params.use_masks : true }};
+{% if attribute(params, 'scale') is defined %}
+offline_targets.push('scale');
+offline_values.push('{{ params.scale }}');
+{% endif %}
+{% if attribute(params, 'use_masks') is defined %}
+offline_targets.push('use_masks');
+offline_values.push('{{ params.use_masks }}');
+{% endif %}
+
 // gallery
 $(function(){
   $('#images > a').fancybox({
@@ -17,6 +30,7 @@ $(function(){
   });
 {% if has_masks %}
   $('#images img').hover(function(){
+    if(!use_masks) return;
     var src = $(this).attr('src');
     if(src.substring(src.length - 3) == 'jpg') {
       src = src.replace('.jpg', '.png');
@@ -30,13 +44,7 @@ $(function(){
   });
 {% endif %}
 });
-//
-var offline_targets = [];
-var offline_values  = [];
-{% if attribute(params, 'scale') is defined %}
-offline_targets.push('scale');
-offline_values.push('{{ params.scale }}');
-{% endif %}
+
 // our functions
 function paramSelect(targets, values) {
   targets = offline_targets.concat(targets);
@@ -94,6 +102,8 @@ function paramChange(target, value, add) {
     };
     $('#images a').attr('href', linkChange);
     $('#images img').attr('src', linkChange);
+  } else if(target == 'use_masks') {
+    use_masks = value;
   }
 }
 </script>
@@ -114,6 +124,7 @@ function paramChange(target, value, add) {
 </section>
 <section id="images" class="{{ class }}{{ exemplar is defined ? ' ex' }}">
 {% if image_base is defined %}
+{% set need_br = true %}
   <!-- single image with file selector -->
   <div id="imselector">
     <label for="image_base">Texture</label>
@@ -123,8 +134,10 @@ function paramChange(target, value, add) {
     {% endfor %}
     </select>
   </div>
+{% endif %}
 
-  {% if class == 'list' and scales is defined %}
+{% if has_scales %}
+{% set need_br = true %}
   <div id="scaleselector">
     <label for="scales_list">Scales</label>
     <select id="scales_list" onchange="paramChange('scale', this.value, this.value != 'full');">
@@ -134,12 +147,24 @@ function paramChange(target, value, add) {
     {% endfor %}
     </select>
   </div>
-  {% endif %}
+{% endif %}
 
+{% if has_masks %}
+{% set need_br = true %}
+  <div id="maskselector">
+    <label for="use_masks">Masks</label>
+    <input type="checkbox" id="use_masks" name="use_masks" onclick="paramChange('use_masks', this.checked, !this.checked);"{{ attribute(params, 'use_masks') is not defined ? ' checked' }} />
+  </div>
+{% endif %}
+
+{% if need_br %}
   <br />
+{% endif %}
 
-  
-  <!-- main exemplar and image -->
+
+{% if image_base is defined %}
+<!-- main exemplar and image -->
+  {# look for params.scale, not just has_scales since scale='' doesn't happen #}
   {% set scale = attribute(params, 'scale') is defined ? params['scale'] %}
   {% if exemplar is defined %}
     <a href="{{ exemplar.file | scalepath(scale) }}" rel="gallery" title="exemplar"><img src="{{ exemplar.file | scalepath(scale) }}" title="exemplar" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }}" /></a>
