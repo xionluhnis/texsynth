@@ -104,6 +104,8 @@ function paramChange(target, value, add) {
     $('#images img').attr('src', linkChange);
   } else if(target == 'use_masks') {
     use_masks = value;
+  } else if(target == 'image_size') {
+    $('#images img').css('max-height', value + 'px');
   }
 }
 </script>
@@ -123,10 +125,22 @@ function paramChange(target, value, add) {
   {% if 'video'   in options %} <a href="./{{ path }}/" class="video">Video</a>{% endif %}
 </section>
 <section id="images" class="{{ class }}{{ exemplar is defined ? ' ex' }}">
+{% if class == 'small' %}
+{% set need_br = true %}
+  <div id="sizeselector" class="selector">
+    <label for="image_size">Size</label>
+    <select id="image_size" onchange="paramChange('image_size', this.value, false);">
+      {% set image_sizes = [64, 128, 256] %}
+      {% for size in image_sizes %}
+      <option value="{{ size }}">{{ size }} px</option>
+      {% endfor %}
+    </select>
+  </div>
+{% endif %}
 {% if image_base is defined %}
 {% set need_br = true %}
   <!-- single image with file selector -->
-  <div id="imselector">
+  <div id="imselector" class="selector">
     <label for="image_base">Texture</label>
     <select id="image_base" onchange="paramSelect('image_base', this.value);">
     {% for opt_image in images %}
@@ -138,7 +152,7 @@ function paramChange(target, value, add) {
 
 {% if has_scales %}
 {% set need_br = true %}
-  <div id="scaleselector">
+  <div id="scaleselector" class="selector">
     <label for="scales_list">Scales</label>
     <select id="scales_list" onchange="paramChange('scale', this.value, this.value != 'full');">
       <option value="full" {{ attribute(params, 'scale') is not defined ? 'selected' }}>Full</option>
@@ -151,7 +165,7 @@ function paramChange(target, value, add) {
 
 {% if has_masks %}
 {% set need_br = true %}
-  <div id="maskselector">
+  <div id="maskselector" class="selector">
     <label for="use_masks">Masks</label>
     <input type="checkbox" id="use_masks" name="use_masks" onclick="paramChange('use_masks', this.checked, !this.checked);"{{ attribute(params, 'use_masks') is not defined ? ' checked' }} />
   </div>
