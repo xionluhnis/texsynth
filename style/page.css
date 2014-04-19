@@ -50,7 +50,7 @@ section a:hover {
 #params {
   text-align: center;
 }
-#params.big a.big, #params.small a.small, #params.list a.list{
+#params.big a.big, #params.small a.small, #params.list a.list, #params.scales a.scales {
   color: black;
   font-weight: bold;
 }
@@ -83,31 +83,41 @@ section a:hover {
 #images #noimages {
   margin: 30px auto;
 }
-#images.list a {
+#images.list a, #images.scales a {
   display: block;
   margin: 20px auto;
 }
-#images.list img {
+#images.list img, #images.scales a {
   width: 100%;
   max-width: 800px;
 }
-#images.list.ex a {
+#images.list.ex a, #images.scales.ex a {
   display: inline-block;
   margin: 20px 10px;
   width: 400px;
   height: 400px;
 }
-#images.list.ex img {
+#images.list.ex img, #images.scales.ex img {
   height: 100%;
   width: auto;
   display: block;
   margin: auto auto;
 }
-#images.list.ex img.tall {
+#images.list.ex img.tall, #images.scales.ex img.tall {
   height: 100%;
   width: auto;
 }
-#images.list.ex img.wide {
+#images.list.ex img.wide, #images.scales.ex img.wide {
   height: auto;
   width: 100%;
+}
+/* selectors */
+#images #imselector, #images #scaleselector {
+  display: inline-block;
+}
+#images br {
+  display: block;
+  height: 5px;
+  margin: 0;
+  padding: 0;
 }
