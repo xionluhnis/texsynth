@@ -150,7 +150,7 @@ function paramChange(target, value, add) {
   </div>
 {% endif %}
 
-{% if has_scales %}
+{% if has_scales and class != 'scales' %}
 {% set need_br = true %}
   <div id="scaleselector" class="selector">
     <label for="scales_list">Scales</label>
@@ -183,7 +183,7 @@ function paramChange(target, value, add) {
   {% if exemplar is defined %}
     <a href="{{ exemplar.file | scalepath(scale) }}" rel="gallery" title="exemplar"><img src="{{ exemplar.file | scalepath(scale) }}" title="exemplar" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }}" /></a>
   {% endif %}
-  <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ image_base }}"><img src="{{ image.file | scalepath(scale) }}" title="{{ image_base }}" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }}" /></a>
+  <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ image_base }}"><img src="{{ image.file | scalepath(scale) }}" title="{{ image_base }}" class="{{ image.width > image.height ? 'wide' : 'tall' }}" /></a>
   
 
   <!-- scales -->
@@ -192,7 +192,7 @@ function paramChange(target, value, add) {
       {% if exemplar is defined %}
         <a href="{{ exemplar.file | scalepath(scale) }}" rel="gallery" title="exemplar at scale {{ scale }}"><img src="{{ exemplar.file | scalepath(scale) }}" title="exemplar at scale {{ scale }}" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }}" /></a>
       {% endif %}
-      <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ image_base }} at scale {{ scale }}"><img src="{{ image.file | scalepath(scale) }}" title="{{ image_base }} at scale {{ scale }}" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }}" /></a>
+      <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ image_base }} at scale {{ scale }}"><img src="{{ image.file | scalepath(scale) }}" title="{{ image_base }} at scale {{ scale }}" class="{{ image.width > image.height ? 'wide' : 'tall' }}" /></a>
     {% endfor %}
   {% endif %}
 

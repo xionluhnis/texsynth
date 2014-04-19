@@ -84,12 +84,13 @@ section a:hover {
   margin: 30px auto;
 }
 #images.list a, #images.scales a {
-  display: block;
-  margin: 20px auto;
+  display: inline-block;
+  width: 350px;
+  margin: 20px 20px;
 }
-#images.list img, #images.scales a {
+#images.list img, #images.scales img {
+  display: block;
   width: 100%;
-  max-width: 800px;
 }
 #images.list.ex a, #images.scales.ex a {
   display: inline-block;
