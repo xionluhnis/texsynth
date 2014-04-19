@@ -113,7 +113,10 @@ function paramChange(target, value, add) {
   } else if(target == 'use_masks') {
     use_masks = value;
   } else if(target == 'image_size') {
-    $('#images img').css('max-height', value + 'px');
+    $('#images img').css({
+      'max-height': value + 'px',
+      'max-width': value + 'px'
+    });
   }
 }
 </script>
