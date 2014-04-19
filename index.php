@@ -79,9 +79,7 @@ switch($target) {
     $type = array_key_exists('type', $data) ? trim($data['type']) : 'single';
 
     // masks
-    if(is_dir($path . '/masks')) {
-      $env['has_masks'] = true;
-    }
+    $env['has_masks'] = is_dir($path . '/masks');
 
     switch($type) {
       case 'single':
@@ -91,10 +89,7 @@ switch($target) {
       case 'default':
         $env['images'] = get_event_images($path, '-im'); // only select the ones with filename ending in -im
         $env['options'][] = 'list';
-        $env['scale'] = '';
-        if(array_key_exists('scale', $params)) {
-          $env['scale'] = $params['scale'];
-        }
+
         // use of scales
         if(is_dir($path . '/images/s1')) {
           $env['options'][]  = 'scales';

@@ -15,7 +15,21 @@ $(function(){
   $('#images > a').fancybox({
     nextEffect: 'none', prevEffect: 'none'
   });
+{% if has_masks %}
+  $('#images img').hover(function(){
+    var src = $(this).attr('src');
+    if(src.substring(src.length - 3) == 'jpg') {
+      src = src.replace('.jpg', '.png');
+      this.replaced = true;
+    }
+    $(this).attr('src', src.replace('{{ path }}/images/', '{{ path }}/masks/'));
+  }, function() {
+    var src = $(this).attr('src');
+    if(this.replaced) src = src.replace('.png', '.jpg');
+    $(this).attr('src', src.replace('{{ path }}/masks/', '{{ path }}/images/'));
   });
+{% endif %}
+});
 //
 var offline_targets = [];
 var offline_values  = [];
@@ -25,7 +39,6 @@ offline_values.push('{{ params.scale }}');
 {% endif %}
 // our functions
 function paramSelect(targets, values) {
-  // TODO take care of the non-changing part of arguments (scales? params?)
   targets = offline_targets.concat(targets);
   values = offline_values.concat(values);
   var path = "./{{ path }}/{{ class }}/";
