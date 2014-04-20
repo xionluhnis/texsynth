@@ -82,15 +82,12 @@ switch($target) {
     $env['has_masks'] = is_dir($path . '/masks');
 
     // use of scales
-    if(is_dir($path . '/images/s1')) {
+    if($scales = get_scales($path, $type == 'params')) {
       $env['options'][]  = 'scales';
       $env['has_scales'] = true;
+      rsort($scales);
+      $env['scales'] = $scales;
       // list scales
-      $scale_dirs = glob($path . '/images/s*');
-      $env['scales'] = array();
-      foreach($scale_dirs as $s) {
-        $env['scales'][] = basename($s);
-      }
       rsort($env['scales']);
     } else {
       $env['has_scales'] = false;
@@ -105,8 +102,9 @@ switch($target) {
         break;
 
       case 'params':
+        $env['options'][] = 'params';
         // build parameter list
-        $env['explore_values']  = get_param_values(); // the values range per parameter
+        $env['explore_values']  = get_param_values($path); // the values range per parameter
         $env['explore_names']   = array(); // the exploration parameter names
         // set names and the first path prefix for the images
         $path_prefix = array();
@@ -114,7 +112,7 @@ switch($target) {
           $env['explore_names'][] = $name;
           $path_prefix[] = $name . $values[0];
         }
-        $path_prefix = implode('/', $path_prefix);
+        $path_prefix = implode('/', $path_prefix) . '/';
 
         // fall-through
         //

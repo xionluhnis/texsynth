@@ -57,10 +57,10 @@ function get_param_values($path, &$values = array(), $prefix = '') {
     return preg_match("/^[a-zA-Z]+/", basename($file));
   });
   // check if next level has images => this level has texture names
-  if(has_images("$path/images/$prefix/$dirs[0]")) return $values;
+  if(has_images("$path/images/$prefix/{$dirs[0]}")) return $values;
   foreach($dirs as $dir) {
     $base = basename($dir);
-    $res = preg_match("/^[a-zA-Z]+", $base, $match);
+    $res = preg_match("/^[a-zA-Z]+/", $base, $match);
     assert($res == 1, "Invalid parameter base $base"); // from before, we expect this
     // set value
     $name = $match[0];
@@ -71,7 +71,31 @@ function get_param_values($path, &$values = array(), $prefix = '') {
       $values[$name] = array($value);
     }
   }
-  return get_param_values($path, $values, "{$prefix}{$dirs[0]}/");
+  $new_prefix=basename($dirs[0]);
+  return get_param_values($path, $values, "{$prefix}$new_prefix/");
+}
+
+function get_first_directory($path) {
+  foreach(glob("$path/*") as $file){
+    if(is_dir($file)) return $file;
+  }
+  return '';
+}
+
+function get_scales($path, $recursive) {
+  $scale_prefix = "$path/images";
+  if(!is_dir("$scale_prefix/s1")){
+    if(!$recursive) return array();
+    while($scale_prefix = get_first_directory($scale_prefix)) {
+      if(is_dir("$scale_prefix/s1")) break;
+    }
+    if(!$scale_prefix) return array();
+  }
+  // populate from $scale_prefix
+  $scale_dirs = glob("$scale_prefix/s*");
+  return array_map(function($dir){
+    return basename($dir);
+  }, $scale_dirs);
 }
 
 ?>
