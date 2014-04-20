@@ -122,3 +122,12 @@ section a:hover {
   margin: 0;
   padding: 0;
 }
+#images #param_explorer {
+  display: block;
+  background: rgb(215, 255, 210);
+  border: 1px solid rgb(0, 158, 51);
+  margin: 10px 50px 0px;
+}
+#images #param_explorer .selector {
+  margin: 0 20px;
+}

@@ -168,7 +168,7 @@ function paramChange(target, value, add) {
     <select id="scales_list" onchange="paramChange('scale', this.value, this.value != 'full');">
       <option value="full" {{ attribute(params, 'scale') is not defined ? 'selected' }}>Full</option>
     {% for scale in scales %}
-      <option value="{{ scale }}"{{ attribute(params, 'scale') is defined and params.scale == scale ? 'selected' }}>{{ scale }}</option>
+      <option value="{{ scale }}" {{ attribute(params, 'scale') is defined and params.scale == scale ? 'selected' }}>{{ scale }}</option>
     {% endfor %}
     </select>
   </div>
@@ -184,6 +184,21 @@ function paramChange(target, value, add) {
 
 {% if need_br %}
   <br />
+{% endif %}
+
+{% if has_params %}
+<div id="param_explorer">
+  {% for pname in explore_names %}
+  <div class="selector">
+    <label for="explore_{{ pname }}">{{ pname }}</label>
+    <select id="explore_{{ pname }}" onchange="paramChange('{{ pname }}', this.value, this.value != '{{ attribute(explore_values, pname)[0] }}')">
+    {% for pval in attribute(explore_values, pname) %}
+      <option value="{{ pval }}"{{ attribute(params, pname) is defined and attribute(params, pname) == pval ? 'selected' }}>{{ pval }}</option>
+    {% endfor %}
+    </select>
+  </div>
+  {% endfor %}
+</div>
 {% endif %}
 
 

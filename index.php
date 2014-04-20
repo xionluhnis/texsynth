@@ -93,6 +93,9 @@ switch($target) {
       $env['has_scales'] = false;
     }
 
+    // synthesis parameters
+    $env['has_params'] = false; // not by default
+
     // prefix of image paths
     $path_prefix = '';
 
@@ -106,6 +109,7 @@ switch($target) {
         // build parameter list
         $env['explore_values']  = get_param_values($path); // the values range per parameter
         $env['explore_names']   = array(); // the exploration parameter names
+        $env['has_params'] = true;
         // set names and the first path prefix for the images
         $path_prefix = array();
         foreach($env['explore_values'] as $name => $values) {
