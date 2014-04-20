@@ -181,6 +181,11 @@ $twig->addFilter(new Twig_SimpleFilter('scalepath', function($file, $scale){
   return $info['dirname'] . "/$scale/" . $info['basename'];
 }));
 
+$twig->addFilter(new Twig_SimpleFilter('fast_image', function($file, $class){
+  // if it ends with .png => .jpg
+  return preg_replace('/.png$/', '.jpg', $file);
+}));
+
 // render!
 $twig->display($target, $env);
 

@@ -44,7 +44,7 @@ $(function(){
   $('#images img').hover(function(){
     if(!use_masks || $(this).attr('src').indexOf('/s0/') != -1 || $(this).hasClass('s0')) return;
     var src = $(this).attr('src');
-    if(src.substring(src.length - 3) == 'jpg') {
+    if(false && src.substring(src.length - 3) == 'jpg') {
       src = src.replace('.jpg', '.png');
       this.replaced = true;
     }
@@ -240,26 +240,26 @@ function paramChange(target, value, add) {
   {% set scale = attribute(params, 'scale') is defined ? params['scale'] %}
   {% if exemplar is defined %}
     {% set ex_scale = scale == 's0' ? 's1' : scale %}
-    <a href="{{ exemplar.file | scalepath(ex_scale) }}" rel="gallery" title="exemplar" class="ex"><img src="{{ exemplar.file | scalepath(ex_scale) }}" title="exemplar" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }} ex {{ scale }}" /></a>
+    <a href="{{ exemplar.file | scalepath(ex_scale) }}" rel="gallery" title="exemplar" class="ex"><img src="{{ exemplar.file | scalepath(ex_scale) | fast_image }}" title="exemplar" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }} ex {{ scale }}" /></a>
   {% endif %}
-    <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ image_base }}" class="im"><img src="{{ image.file | scalepath(scale) }}" title="{{ image_base }}" class="{{ image.width > image.height ? 'wide' : 'tall' }} im {{ scale }}" /></a>
+    <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ image_base }}" class="im"><img src="{{ image.file | scalepath(scale) | fast_image }}" title="{{ image_base }}" class="{{ image.width > image.height ? 'wide' : 'tall' }} im {{ scale }}" /></a>
   
 
   <!-- scales -->
   {% if class == 'scales' %}
     {% for scale in scales %}
       {% if exemplar is defined and scale != 's0' %}
-        <a href="{{ exemplar.file | scalepath(scale) }}" rel="gallery" title="exemplar at scale {{ scale }}" class="ex"><img src="{{ exemplar.file | scalepath(scale) }}" title="exemplar at scale {{ scale }}" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }} ex {{ scale }}" /></a>
+        <a href="{{ exemplar.file | scalepath(scale) }}" rel="gallery" title="exemplar at scale {{ scale }}" class="ex"><img src="{{ exemplar.file | scalepath(scale) | fast_image }}" title="exemplar at scale {{ scale }}" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }} ex {{ scale }}" /></a>
       {% endif %}
       {% set scale_title = (scale == 's0') ? 'Initial ' ~ image_base : image_base ~ ' at scale ' ~ scale %}
-      <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ scale_title }}" class="im"><img src="{{ image.file | scalepath(scale) }}" title="{{ scale_title }}" class="{{ image.width > image.height ? 'wide' : 'tall' }} im {{ scale }}" /></a>
+      <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ scale_title }}" class="im"><img src="{{ image.file | scalepath(scale) | fast_image }}" title="{{ scale_title }}" class="{{ image.width > image.height ? 'wide' : 'tall' }} im {{ scale }}" /></a>
     {% endfor %}
   {% endif %}
 
 {% else %}
   <!-- many images -->
   {% for image in images %}
-    <a href="{{ image }}" rel="gallery" title="{{ image | filename }}"><img src="{{ image }}" title="{{ image | filename }}" /></a>
+    <a href="{{ image }}" rel="gallery" title="{{ image | filename }}"><img src="{{ image | fast_image }}" title="{{ image | filename }}" /></a>
   {% else %}
     <div id="noimages">
       No image yet!

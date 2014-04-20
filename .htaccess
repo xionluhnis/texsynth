@@ -3,6 +3,18 @@ RewriteEngine on
 # specify the base path
 RewriteBase /2014/texsynth/
 
+# some files should never be reached
+<Files ~ "\.(sh|tar.gz|zip|html)$">
+  order allow,deny
+  deny from all
+</Files>
+
+# automatic jpg generation
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([0-9]{4})/([^/]+)/cache/(.+).jpg cache.php?img=$1/$2/$3.png [R,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([0-9]{4})/([^/]+)/(.+).jpg$ $1/$2/cache/$3.jpg [R]
+
 # file or potential file
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^([0-9]{4})/([^/]+)/.+(dat|jpg|png)$ style/missingfile.png [R,L]
