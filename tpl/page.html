@@ -44,7 +44,7 @@ $(function(){
   $('#images img').hover(function(){
     if(!use_masks || $(this).attr('src').indexOf('/s0/') != -1 || $(this).hasClass('s0')) return;
     var src = $(this).attr('src');
-    if(false && src.substring(src.length - 3) == 'jpg') {
+    if(src.substring(src.length - 3) == 'jpg') {
       src = src.replace('.jpg', '.png');
       this.replaced = true;
     }
@@ -53,6 +53,13 @@ $(function(){
     var src = $(this).attr('src');
     if(this.replaced) src = src.replace('.png', '.jpg');
     $(this).attr('src', src.replace('{{ path }}/masks/', '{{ path }}/images/'));
+  });
+{% endif %}
+{% if attribute(params, 'size') is defined %}
+  var value = '{{ params.size }}px';
+  $('#images img').css({
+    'height': value, 'max-height': value,
+    'width': value, 'max-width': value
   });
 {% endif %}
 });
@@ -126,8 +133,8 @@ function paramChange(target, value, add) {
     use_masks = value;
   } else if(target == 'image_size') {
     $('#images img').css({
-      'max-height': value + 'px',
-      'max-width': value + 'px'
+      'height': value, 'max-height': value,
+      'width': value, 'max-width': value
     });
   } else if($.inArray(target, explore_params) != -1) {
     // this is a synthesis parameter => links change
@@ -161,10 +168,9 @@ function paramChange(target, value, add) {
   {{ text | raw }}
 </section>
 <section id="params" class="{{ class }}">
-  {% if 'big'     in options %} <a href="./{{ path }}/big" class="big">Big</a>{% endif %}
-  {% if 'small'   in options %} <a href="./{{ path }}/small" class="small">Small</a>{% endif %}
-  {% if 'list'    in options %} <a href="./{{ path }}/list" class="list">List</a>{% endif %}
-  {% if 'scales'  in options %} <a href="./{{ path }}/scales" class="scales">Scales</a>{% endif %}
+  {% if 'small'   in options %} <a href="./{{ path }}/small" class="small">All textures</a>{% endif %}
+  {% if 'list'    in options %} <a href="./{{ path }}/list" class="list">By texture</a>{% endif %}
+  {% if 'scales'  in options %} <a href="./{{ path }}/scales" class="scales">All scales</a>{% endif %}
   {% if 'video'   in options %} <a href="./{{ path }}/" class="video">Video</a>{% endif %}
 </section>
 <section id="images" class="{{ class }}{{ exemplar is defined ? ' ex' }}">
@@ -173,9 +179,9 @@ function paramChange(target, value, add) {
   <div id="sizeselector" class="selector">
     <label for="image_size">Size</label>
     <select id="image_size" onchange="paramChange('image_size', this.value, false);">
-      {% set image_sizes = [64, 128, 256] %}
+      {% set image_sizes = [64, 128, 256, 512] %}
       {% for size in image_sizes %}
-      <option value="{{ size }}">{{ size }} px</option>
+      <option value="{{ size }}px" {{ attribute(params, 'size') is defined and params.size == size ? 'selected' }}>{{ size }} px</option>
       {% endfor %}
     </select>
   </div>
@@ -240,26 +246,26 @@ function paramChange(target, value, add) {
   {% set scale = attribute(params, 'scale') is defined ? params['scale'] %}
   {% if exemplar is defined %}
     {% set ex_scale = scale == 's0' ? 's1' : scale %}
-    <a href="{{ exemplar.file | scalepath(ex_scale) }}" rel="gallery" title="exemplar" class="ex"><img src="{{ exemplar.file | scalepath(ex_scale) | fast_image }}" title="exemplar" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }} ex {{ scale }}" /></a>
+    <a href="{{ exemplar.file | scalepath(ex_scale) }}" rel="gallery" title="exemplar" class="ex"><img src="{{ exemplar.file | scalepath(ex_scale) | fast_image(class == 'small') }}" title="exemplar" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }} ex {{ scale }}" /></a>
   {% endif %}
-    <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ image_base }}" class="im"><img src="{{ image.file | scalepath(scale) | fast_image }}" title="{{ image_base }}" class="{{ image.width > image.height ? 'wide' : 'tall' }} im {{ scale }}" /></a>
+    <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ image_base }}" class="im"><img src="{{ image.file | scalepath(scale) | fast_image(class == 'small') }}" title="{{ image_base }}" class="{{ image.width > image.height ? 'wide' : 'tall' }} im {{ scale }}" /></a>
   
 
   <!-- scales -->
   {% if class == 'scales' %}
     {% for scale in scales %}
       {% if exemplar is defined and scale != 's0' %}
-        <a href="{{ exemplar.file | scalepath(scale) }}" rel="gallery" title="exemplar at scale {{ scale }}" class="ex"><img src="{{ exemplar.file | scalepath(scale) | fast_image }}" title="exemplar at scale {{ scale }}" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }} ex {{ scale }}" /></a>
+        <a href="{{ exemplar.file | scalepath(scale) }}" rel="gallery" title="exemplar at scale {{ scale }}" class="ex"><img src="{{ exemplar.file | scalepath(scale) | fast_image(class == 'small') }}" title="exemplar at scale {{ scale }}" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }} ex {{ scale }}" /></a>
       {% endif %}
       {% set scale_title = (scale == 's0') ? 'Initial ' ~ image_base : image_base ~ ' at scale ' ~ scale %}
-      <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ scale_title }}" class="im"><img src="{{ image.file | scalepath(scale) | fast_image }}" title="{{ scale_title }}" class="{{ image.width > image.height ? 'wide' : 'tall' }} im {{ scale }}" /></a>
+      <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ scale_title }}" class="im"><img src="{{ image.file | scalepath(scale) | fast_image(class == 'small') }}" title="{{ scale_title }}" class="{{ image.width > image.height ? 'wide' : 'tall' }} im {{ scale }}" /></a>
     {% endfor %}
   {% endif %}
 
 {% else %}
   <!-- many images -->
   {% for image in images %}
-    <a href="{{ image }}" rel="gallery" title="{{ image | filename }}"><img src="{{ image | fast_image }}" title="{{ image | filename }}" /></a>
+    <a href="{{ image }}" rel="gallery" title="{{ image | filename }}"><img src="{{ image | fast_image(class == 'small') }}" title="{{ image | filename }}" /></a>
   {% else %}
     <div id="noimages">
       No image yet!

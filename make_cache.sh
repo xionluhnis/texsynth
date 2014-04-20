@@ -14,14 +14,14 @@ function cache() {
   shopt -s globstar # enable **/*.png
   for img in ./**/*.png; do
     cached="./cache/${img/.png/.jpg}"
-    if [[ ! -f "$cached" ]] || [[ ! $(file -b "$cached" | grep image) ]]; then
+    if [[ -n "$FORCE" ]] || [[ ! -f "$cached" ]] || [[ ! $(file -b "$cached" | grep image) ]]; then
       echo "Caching $dir/$img"
       cache_dir=$(dirname "$cached")
       if [[ ! -d "$cache_dir" ]]; then
         mkdir -p "$cache_dir"
         chown -R "$USER:$GROUP" cache
       fi
-      convert "$img" "$cached"
+      convert "$img" -resize 25% "$cached"
     fi
   done
 
