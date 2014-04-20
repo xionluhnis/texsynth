@@ -22,6 +22,18 @@ offline_values.push('{{ params.scale }}');
 offline_targets.push('use_masks');
 offline_values.push('{{ params.use_masks }}');
 {% endif %}
+{% if has_params %}
+var explore_params = [];
+var explore_values = {};
+  {% for pname in explore_names %}
+    {% if attribute(params, pname) is defined %}
+    offline_targets.push('{{ pname }}');
+    offline_values.push('{{ attribute(explore_values, pname) }}');
+    {% endif %}
+  explore_params.push('{{ pname }}');
+  explore_values['{{ pname }}'] = "{{ attribute(explore_values, pname) | join('_') }}".split('_');
+  {% endfor %}
+{% endif %}
 
 // gallery
 $(function(){
@@ -117,6 +129,26 @@ function paramChange(target, value, add) {
       'max-height': value + 'px',
       'max-width': value + 'px'
     });
+  } else if($.inArray(target, explore_params) != -1) {
+    // this is a synthesis parameter => links change
+    var linkChange = function(index, href) {
+      var tokens = href.split('/');
+      var index = -1;
+      for(var i = 0; i < tokens.length; ++i) {
+        // try each possible value
+        for(var j = 0, n = explore_values[target].length; j < n; ++j) {
+          if(tokens[i] == target + explore_values[target][j]){
+            index = i;
+            break;
+          }
+        }
+      }
+      if(index != -1) tokens.splice(index, 1);
+      tokens.splice(index, 0, target + value);
+      return tokens.join('/');
+    };
+    $('#images a').attr('href', linkChange);
+    $('#images img').attr('src', linkChange);
   }
 }
 </script>

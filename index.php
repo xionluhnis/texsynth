@@ -114,7 +114,11 @@ switch($target) {
         $path_prefix = array();
         foreach($env['explore_values'] as $name => $values) {
           $env['explore_names'][] = $name;
-          $path_prefix[] = $name . $values[0];
+          if(array_key_exists($name, $params)){
+            $path_prefix[] = $name . $params[$name];
+          } else {
+            $path_prefix[] = $name . $values[0]; // default
+          }
         }
         $path_prefix = implode('/', $path_prefix) . '/';
 
