@@ -22,9 +22,9 @@ function get_imageinfo($file) {
   return $info;
 }
 
-function get_event_images($path, $suffix = '') {
+function get_event_images($path, $suffix = '', $prefix = '') {
   static $image_extensions = array('png', 'jpg');
-  $files = array_filter(glob($path . '/images/*'), function($file) use(&$suffix) {
+  $files = array_filter(glob("$path/images/$prefix*"), function($file) use(&$suffix) {
     if (strlen($suffix) > 0) {
       $name = pathinfo($file, PATHINFO_FILENAME);
       if (substr($name, -strlen($suffix)) !== $suffix) return false;
@@ -45,6 +45,33 @@ function get_image_exemplar($file) {
     }
   }
   return '';
+}
+
+function has_images($path) {
+  return glob("$path/*.png") || glob("$path/*.jpg");
+}
+
+function get_param_values($path, &$values = array(), $prefix = '') {
+  $dirs = array_filter(glob("$path/images/$prefix*"), function($file) {
+    if(!is_dir($file)) return false;
+    return preg_match("/^[a-zA-Z]+/", basename($file));
+  });
+  // check if next level has images => this level has texture names
+  if(has_images("$path/images/$prefix/$dirs[0]")) return $values;
+  foreach($dirs as $dir) {
+    $base = basename($dir);
+    $res = preg_match("/^[a-zA-Z]+", $base, $match);
+    assert($res == 1, "Invalid parameter base $base"); // from before, we expect this
+    // set value
+    $name = $match[0];
+    $value = substr($base, strlen($name));
+    if($values[$name]){
+      $values[$name][] = $value;
+    } else {
+      $values[$name] = array($value);
+    }
+  }
+  return get_param_values($path, $values, "{$prefix}{$dirs[0]}/");
 }
 
 ?>

@@ -82,27 +82,44 @@ switch($target) {
     $env['has_masks'] = is_dir($path . '/masks');
 
     // use of scales
-   if(is_dir($path . '/images/s1')) {
-     $env['options'][]  = 'scales';
-     $env['has_scales'] = true;
-     // list scales
-     $scale_dirs = glob($path . '/images/s*');
-     $env['scales'] = array();
-     foreach($scale_dirs as $s) {
-       $env['scales'][] = basename($s);
-     }
-     rsort($env['scales']);
-   } else {
-     $env['has_scales'] = false;
-   }
+    if(is_dir($path . '/images/s1')) {
+      $env['options'][]  = 'scales';
+      $env['has_scales'] = true;
+      // list scales
+      $scale_dirs = glob($path . '/images/s*');
+      $env['scales'] = array();
+      foreach($scale_dirs as $s) {
+        $env['scales'][] = basename($s);
+      }
+      rsort($env['scales']);
+    } else {
+      $env['has_scales'] = false;
+    }
+
+    // prefix of image paths
+    $path_prefix = '';
 
     switch($type) {
       case 'single':
         $env['images'] = get_event_images($path);
         break;
 
+      case 'params':
+        // build parameter list
+        $env['explore_values']  = get_param_values(); // the values range per parameter
+        $env['explore_names']   = array(); // the exploration parameter names
+        // set names and the first path prefix for the images
+        $path_prefix = array();
+        foreach($env['explore_values'] as $name => $values) {
+          $env['explore_names'][] = $name;
+          $path_prefix[] = $name . $values[0];
+        }
+        $path_prefix = implode('/', $path_prefix);
+
+        // fall-through
+        //
       case 'default':
-        $env['images'] = get_event_images($path, '-im'); // only select the ones with filename ending in -im
+        $env['images'] = get_event_images($path, '-im', $path_prefix); // only select the ones with filename ending in -im
         $env['options'][] = 'list';
 
         // class-dependent data
