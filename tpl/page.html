@@ -28,7 +28,7 @@ var explore_values = {};
   {% for pname in explore_names %}
     {% if attribute(params, pname) is defined %}
     offline_targets.push('{{ pname }}');
-    offline_values.push('{{ attribute(explore_values, pname) }}');
+    offline_values.push('{{ attribute(params, pname) }}');
     {% endif %}
   explore_params.push('{{ pname }}');
   explore_values['{{ pname }}'] = "{{ attribute(explore_values, pname) | join('_') }}".split('_');
