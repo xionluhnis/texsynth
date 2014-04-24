@@ -43,6 +43,10 @@ $(function(){
   $('#text a.img').fancybox({
     nextEffect: 'none', prevEffect: 'none'
   });
+  var $text = $('#text');
+  if($text.height() > 200) {
+    $text.addClass('oversized').find('#textswitch, #textoverlay').addClass('needed');
+  }
 {% if has_masks %}
   $('#images img').hover(function(){
     if(!use_masks || $(this).attr('src').indexOf('/s0/') != -1 || $(this).hasClass('s0')) return;
@@ -161,6 +165,15 @@ function paramChange(target, value, add) {
     $('#images img').attr('src', linkChange);
   }
 }
+function showText(link){
+  var $text = $('#text');
+  $text.toggleClass('full');
+  if($text.hasClass('full')){
+    $(link).text('Hide');
+  } else {
+    $(link).text('Show');
+  }
+}
 </script>
 {% endblock %}
 
@@ -168,6 +181,8 @@ function paramChange(target, value, add) {
 <a href="." id="back_index">Index</a>
 <h1>{{ title }}</h1>
 <section id="text">
+  <a id="textswitch" onclick="showText(this);">Show</a>
+  <div id="textoverlay"></div>
   {{ text | raw }}
 </section>
 <section id="params" class="{{ class }}">

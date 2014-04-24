@@ -47,6 +47,17 @@ section a:hover {
 }
 
 /* text */
+#text {
+  position: relative;
+}
+#text.oversized {
+  height: 200px;
+  overflow: hidden;
+}
+#text.full {
+  height: auto;
+  overflow: visible;
+}
 #text p.center {
   text-align: center;
 }
@@ -66,6 +77,45 @@ section a:hover {
 }
 #text ol {
   list-style: decimal;
+}
+#text a#textswitch, #text div#textoverlay {
+  display: none;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+#text a#textswitch.needed {
+  position: absolute;
+  display: block;
+  width: 50px;
+  top: auto;
+  bottom: 20px;
+  right: 0px;
+  float: right;
+  cursor: s-resize;
+  /* cursor: pointer; */
+  /* text-decoration: underline; */
+  border-bottom: double gray;
+  text-align: center;
+}
+#text.full a#textswitch.needed {
+  cursor: n-resize;
+}
+#text div#textoverlay.needed {
+  display: block;
+  height: 0px;
+  width: 100%;
+  position: relative;
+  right: 0px;
+  top: 200px;
+  padding: 0;
+  /* border: 1px solid black; */
+  margin: 0;
+  background: white;
+  box-shadow: 0 0 50px 10px #ccc;
+}
+#text.full div#textoverlay.needed {
+  display: none;
 }
 
 /* params */
