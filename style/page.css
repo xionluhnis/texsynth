@@ -46,6 +46,28 @@ section a:hover {
   color: #333;
 }
 
+/* text */
+#text p.center {
+  text-align: center;
+}
+#text a.img {
+  border: none;
+  display: inline-block;
+  margin: 20px;
+}
+#text a.img:hover, #text a.img:link, #text a.img:active {
+  border: none;
+}
+#text img {
+  max-height: 64px;
+  height: auto;
+  border: 1px solid white;
+  box-shadow: 0 0 20px gray;
+}
+#text ol {
+  list-style: decimal;
+}
+
 /* params */
 #params {
   text-align: center;

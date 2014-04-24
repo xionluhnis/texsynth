@@ -40,6 +40,9 @@ $(function(){
   $('#images > a').fancybox({
     nextEffect: 'none', prevEffect: 'none'
   });
+  $('#text a.img').fancybox({
+    nextEffect: 'none', prevEffect: 'none'
+  });
 {% if has_masks %}
   $('#images img').hover(function(){
     if(!use_masks || $(this).attr('src').indexOf('/s0/') != -1 || $(this).hasClass('s0')) return;
