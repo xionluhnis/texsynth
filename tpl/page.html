@@ -63,7 +63,7 @@ $(function(){
   });
 {% endif %}
 {% if class == 'small' %}
-{% set init_size = attribute(params, 'size') is defined ? params.size : (images|length > 20 ? 64 : (images|length > 9 ? 128 : 256)) %}
+{% set init_size = attribute(params, 'size') is defined ? params.size : (images|length > 30 ? 64 : (images|length > 9 ? 128 : 256)) %}
   var value = '{{ init_size }}px';
   $('#images img').css({
     'height': value, 'max-height': value,
@@ -195,7 +195,7 @@ function showText(link){
 <section id="images" class="{{ class }}{{ exemplar is defined ? ' ex' }}">
 {% if class == 'small' %}
 {% set need_br = true %}
-{% set init_size = attribute(params, 'size') is defined ? params.size : (images|length > 20 ? 64 : (images|length > 9 ? 128 : 256)) %}
+{% set init_size = attribute(params, 'size') is defined ? params.size : (images|length > 30 ? 64 : (images|length > 9 ? 128 : 256)) %}
   <div id="sizeselector" class="selector">
     <label for="image_size">Size</label>
     <select id="image_size" onchange="paramChange('image_size', this.value, false);">
