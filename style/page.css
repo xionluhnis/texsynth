@@ -86,6 +86,7 @@ section a:hover {
 }
 #text a#textswitch.needed {
   position: absolute;
+  background: rgba(240, 240, 240, 0.95);
   display: block;
   width: 50px;
   top: auto;
@@ -97,6 +98,7 @@ section a:hover {
   /* text-decoration: underline; */
   border-bottom: double gray;
   text-align: center;
+  box-shadow: -10px 0 30px 30px #F0F0F0;
 }
 #text.full a#textswitch.needed {
   cursor: n-resize;
@@ -112,7 +114,7 @@ section a:hover {
   /* border: 1px solid black; */
   margin: 0;
   background: white;
-  box-shadow: 0 0 50px 10px #ccc;
+  box-shadow: 0 0 50px 30px #F0F0F0;
 }
 #text.full div#textoverlay.needed {
   display: none;
