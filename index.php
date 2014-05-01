@@ -187,6 +187,11 @@ $twig->addFilter(new Twig_SimpleFilter('fast_image', function($file, $flag){
   return preg_replace('/.png$/', '.jpg', $file);
 }));
 
+$twig->addFilter(new Twig_SimpleFilter('trimname', function($name){
+  if(substr($name, 0, 1) === '-') return substr($name, 1);
+  return $name;
+}));
+
 // render!
 $twig->display($target, $env);
 

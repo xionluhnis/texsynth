@@ -251,7 +251,7 @@ function showText(link){
     <label for="explore_{{ pname }}">{{ pname }}</label>
     <select id="explore_{{ pname }}" onchange="paramChange('{{ pname }}', this.value, this.value != '{{ attribute(explore_values, pname)[0] }}')">
     {% for pval in attribute(explore_values, pname) %}
-      <option value="{{ pval }}"{{ attribute(params, pname) is defined and attribute(params, pname) == pval ? 'selected' }}>{{ pval }}</option>
+      <option value="{{ pval }}"{{ attribute(params, pname) is defined and attribute(params, pname) == pval ? 'selected' }}>{{ pval | trimname }}</option>
     {% endfor %}
     </select>
   </div>
