@@ -75,6 +75,21 @@ function get_param_values($path, &$values = array(), $prefix = '') {
   return get_param_values($path, $values, "{$prefix}$new_prefix/");
 }
 
+function get_valid_directories($path) {
+  $base = $path . '/images';
+  $iter = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($base, RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::SELF_FIRST, RecursiveIteratorIterator::CATCH_GET_CHILD // Ignore "Permission denied"
+  );
+
+  $paths = array();
+  foreach ($iter as $path => $dir) {
+    if ($dir->isDir()) {
+      $paths[] = $path;
+    }
+  }
+  return $paths;
+}
+
 function get_first_directory($path) {
   foreach(glob("$path/*") as $file){
     if(is_dir($file)) return $file;
@@ -84,7 +99,7 @@ function get_first_directory($path) {
 
 function get_scales($path, $recursive) {
   $scale_prefix = "$path/images";
-  if(!is_dir("$scale_prefix/s1")){
+  if(!is_dir("$scale_prefix/s1") && !is_dir("$scale_prefix/s0")){
     if(!$recursive) return array();
     while($scale_prefix = get_first_directory($scale_prefix)) {
       if(is_dir("$scale_prefix/s1")) break;

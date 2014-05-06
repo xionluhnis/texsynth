@@ -109,6 +109,7 @@ switch($target) {
         // build parameter list
         $env['explore_values']  = get_param_values($path); // the values range per parameter
         $env['explore_names']   = array(); // the exploration parameter names
+        $env['valid_dirs'] = get_valid_directories($path); // the subdirectories
         $env['has_params'] = true;
         // set names and the first path prefix for the images
         $path_prefix = array();
@@ -190,6 +191,10 @@ $twig->addFilter(new Twig_SimpleFilter('fast_image', function($file, $flag){
 $twig->addFilter(new Twig_SimpleFilter('trimname', function($name){
   if(substr($name, 0, 1) === '-') return substr($name, 1);
   return $name;
+}));
+
+$twig->addFilter(new Twig_SimpleFilter('trimpath', function($path, $from) {
+  return implode(array_slice(explode('/', $path), $from), '/');
 }));
 
 // render!
