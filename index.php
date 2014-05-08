@@ -120,6 +120,9 @@ switch($target) {
           } else {
             $path_prefix[] = $name . $values[0]; // default
           }
+          // natural sort of parameter values
+          natsort($values);
+          $env['explore_values'][$name] = $values;
         }
         $path_prefix = implode('/', $path_prefix) . '/';
 
