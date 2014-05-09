@@ -47,7 +47,7 @@ if (!preg_match('![0-9]{4}/.+!', $path) || !is_dir($path)){
 $env = array(
   'path' => $path,
   'params' => $params,
-  'options' => array('big', 'small')
+  'options' => array('small')
 );
 
 include_once 'libs/index.inc.php';
@@ -104,6 +104,34 @@ switch($target) {
         $env['images'] = get_event_images($path);
         break;
 
+      case 'sets':
+        $env['images'] = get_event_sets($path);
+        $env['options'] = array('sets');
+        $env['class'] = 'sets';
+        // use the current set data
+        if(array_key_exists('image_base', $params)){
+          $base = $params['image_base'];
+          // find the image
+          foreach($env['images'] as $img_set){
+            $file = pathinfo($img_set);
+            if($file['filename'] === $base) {
+              $env['image'] = get_imageinfo($img_set . '/ex.jpg');
+              $env['image_base'] = $base;
+              $cur_set = $img_set;
+              break;
+            }
+          }
+        } else {
+          $cur_set = reset($env['images']);
+          $file = get_imageinfo($cur_set . '/ex.jpg');
+          $env['image'] = $file;
+          $name = $file['filename'];
+          $env['image_base'] = pathinfo($cur_set, PATHINFO_BASENAME);
+        }
+        // load image set
+        $env['set_images'] = get_event_set_images($cur_set);
+        break;
+
       case 'params':
         $env['options'][] = 'params';
         // build parameter list
@@ -150,7 +178,7 @@ switch($target) {
                   }
                 }
               } else {
-                $file = get_pathinfo(reset($env['images']));
+                $file = get_imageinfo(reset($env['images']));
                 $env['image'] = $file;
                 $name = $file['filename'];
                 $env['image_base'] = substr($name, 0, strlen($name) - 3); // remove -im

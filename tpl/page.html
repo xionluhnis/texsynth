@@ -252,6 +252,7 @@ function getParamOptions(cur) {
 <section id="params" class="{{ class }}">
   {% if 'small'   in options %} <a href="./{{ path }}/small" class="small">All textures</a>{% endif %}
   {% if 'list'    in options %} <a href="./{{ path }}/list" class="list">By texture</a>{% endif %}
+  {% if 'sets'    in options %} <a href="./{{ path }}/sets" class="sets">By texture set</a>{% endif %}
   {% if 'scales'  in options %} <a href="./{{ path }}/scales" class="scales">All scales</a>{% endif %}
   {% if 'video'   in options %} <a href="./{{ path }}/" class="video">Video</a>{% endif %}
 </section>
@@ -332,7 +333,13 @@ function getParamOptions(cur) {
     <a href="{{ exemplar.file | scalepath(ex_scale) }}" rel="gallery" title="exemplar" class="ex"><img src="{{ exemplar.file | scalepath(ex_scale) | fast_image(class == 'small') }}" title="exemplar" class="{{ exemplar.width > exemplar.height ? 'wide' : 'tall' }} ex {{ scale }}" /></a>
   {% endif %}
     <a href="{{ image.file | scalepath(scale) }}" rel="gallery" title="{{ image_base }}" class="im"><img src="{{ image.file | scalepath(scale) | fast_image(class == 'small') }}" title="{{ image_base }}" class="{{ image.width > image.height ? 'wide' : 'tall' }} im {{ scale }}" /></a>
-  
+
+  <!-- set -->
+  {% if class == 'sets' %}
+    {% for img in set_images %}
+      <a href="{{ img.file }}" rel="gallery" title="{{ img.filename }}" class="im"><img src="{{ img.file | fast_image(class == 'small') }}" title="{{ img.filename }}" class="{{ img.width > img.height ? 'wide' : 'tall' }} im" /></a>
+    {% endfor %}
+  {% endif %}
 
   <!-- scales -->
   {% if class == 'scales' %}

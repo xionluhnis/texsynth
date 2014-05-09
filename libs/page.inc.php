@@ -34,6 +34,21 @@ function get_event_images($path, $suffix = '', $prefix = '') {
   return $files;
 }
 
+function get_event_sets($path) {
+  return array_filter(glob("$path/images/*"), function($file) {
+    return is_dir($file) && is_file($file . '/ex.jpg');
+  });
+}
+
+function get_event_set_images($img_set) {
+  static $image_extensions = array('png', 'jpg');
+  $images = array_filter(glob("$img_set/im-*"), function($file) use(&$image_extensions) {
+    return is_file($file) && in_array(pathinfo($file, PATHINFO_EXTENSION), $image_extensions);
+  });
+  natsort($images);
+  return array_map('get_imageinfo', $images);
+}
+
 function get_image_exemplar($file) {
   static $images_extensions = array('png', 'jpg');
   $info = pathinfo($file);

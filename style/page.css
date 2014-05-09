@@ -124,7 +124,7 @@ section a:hover {
 #params {
   text-align: center;
 }
-#params.big a.big, #params.small a.small, #params.list a.list, #params.scales a.scales {
+#params.big a.big, #params.small a.small, #params.list a.list, #params.scales a.scales, #params.sets a.sets {
   color: black;
   font-weight: bold;
 }
@@ -157,6 +157,15 @@ section a:hover {
 #images #noimages {
   margin: 30px auto;
 }
+#images.sets a {
+  display: inline-block;
+  width: 300px;
+  height: 300px;
+  margin: 20px;
+  vertical-align: top;
+}
+#images.sets img {
+}
 #images.list a, #images.scales a {
   display: inline-block;
   width: 350px;
@@ -178,11 +187,11 @@ section a:hover {
   display: block;
   margin: auto auto;
 }
-#images.list.ex img.tall, #images.scales.ex img.tall {
+#images.list.ex img.tall, #images.scales.ex img.tall, #images.sets img.tall {
   height: 100%;
   width: auto;
 }
-#images.list.ex img.wide, #images.scales.ex img.wide {
+#images.list.ex img.wide, #images.scales.ex img.wide, #images.sets img.wide {
   height: auto;
   width: 100%;
 }
