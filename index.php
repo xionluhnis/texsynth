@@ -62,6 +62,7 @@ switch($target) {
     // the general event data
     $env['text']  = get_event_text($path);
     $env['title'] = get_event_title($path, 'Synthesis: ' . $path);
+    $env['has_captions'] = false;
 
     // load the display parameters
     static $display_modes = array('big', 'small', 'list', 'scales', 'video');
@@ -77,6 +78,13 @@ switch($target) {
     parse_str(get_file_content($path . '/data.dat'), $data);
     $env['data']  = $data;
     $type = array_key_exists('type', $data) ? trim($data['type']) : 'single';
+
+    // load potential captions
+    $captions = get_file_content($path . '/captions.json');
+    if(strlen($captions) > 1){
+      $env['has_captions'] = true;
+      $env['caption_data'] = $captions;
+    }
 
     // masks
     $env['has_masks'] = is_dir($path . '/masks');

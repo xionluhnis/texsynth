@@ -40,8 +40,23 @@ var valid_dirs = {
 
 // gallery
 $(function(){
+  {% if has_captions %}
+  var captionData = $.parseJSON($('#caption_data').html());
+  $('#caption_data').data('json', captionData);
+  {% endif %}
   $('#images > a').fancybox({
-    nextEffect: 'none', prevEffect: 'none'
+    nextEffect: 'none', prevEffect: 'none',
+    beforeShow: function(){
+    {% if class == 'sets' and has_captions %}
+      var url = $(this).attr('href');
+      var idx = url.indexOf('/im-');
+      if (idx != -1){
+        var entry = url.substring(idx + 4, url.length - 4);
+        var json = $('#caption_data').data('json');
+        this.title = this.title + "<br />" + json[entry];
+      }
+    {% endif %}
+    }
   });
   $('#text a.img').fancybox({
     nextEffect: 'none', prevEffect: 'none'
@@ -239,6 +254,11 @@ function getParamOptions(cur) {
 }
 {% endif %}
 </script>
+{% if has_captions %}
+<template id="caption_data">
+{{ caption_data }}
+</template>
+{% endif %}
 {% endblock %}
 
 {% block page %}
