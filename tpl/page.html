@@ -277,7 +277,7 @@ function getParamOptions(cur) {
     <label for="image_base">Texture</label>
     <select id="image_base" onchange="paramSelect('image_base', this.value);">
     {% for opt_image in images %}
-    <option value="{{ opt_image | filename('-im') }}"{{ opt_image == image.file ? ' selected' }}>{{ opt_image | filename('-im') }}</option>
+    <option value="{{ opt_image | filename('-im') }}"{{ opt_image == image.file or opt_image|filename == image_base ? ' selected' }}>{{ opt_image | filename('-im') }}</option>
     {% endfor %}
     </select>
   </div>
