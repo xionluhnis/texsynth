@@ -228,7 +228,7 @@ $twig->addFilter(new Twig_SimpleFilter('fast_image', function($file, $flag){
 }));
 
 $twig->addFilter(new Twig_SimpleFilter('trimname', function($name){
-  if(substr($name, 0, 1) === '-') return substr($name, 1);
+  if(substr($name, 0, 1) === '-' && !is_numeric($name)) return substr($name, 1);
   return $name;
 }));
 
