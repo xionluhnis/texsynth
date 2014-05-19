@@ -353,6 +353,7 @@ function getParamOptions(cur) {
 
   <!-- set -->
   {% if class == 'sets' %}
+    <br />
     {% for img in set_images %}
       <a href="{{ img.file }}" rel="gallery" title="{{ img.filename }}" class="im"><img src="{{ img.file | fast_image(class == 'small') }}" title="{{ img.filename }}" class="{{ img.width > img.height ? 'wide' : 'tall' }} im" /></a>
     {% endfor %}
