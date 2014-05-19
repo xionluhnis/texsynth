@@ -166,6 +166,12 @@ section a:hover {
 }
 #images.sets img {
 }
+#images.sets hr {
+  width: 50%;
+  color: rgba(0, 0, 0, 0);
+  margin: 5px auto;
+  border-bottom: 2px dotted silver;
+}
 #images.list a, #images.scales a {
   display: inline-block;
   width: 350px;
