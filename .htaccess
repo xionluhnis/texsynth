@@ -21,7 +21,7 @@ RewriteRule ^([0-9]{4})/([^/]+)/.+(dat|jpg|png)$ style/missingfile.png [R,L]
 # page from gallery
 RewriteCond %{REQUEST_FILENAME} -d [OR]
 RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^([0-9]{4})/([^/]+)/?$ index.php?path=$1/$2 [QSA,L]
+RewriteRule ^([0-9]{4})/([^/]+)/?$ index.php?path=$1/$2 [B,QSA,L]
 # page with parameters
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^([0-9]{4})/([^/]+)/(.*)$ index.php?path=$1/$2&params=$3 [QSA,L]
+RewriteRule ^([0-9]{4})/([^/]+)/(.*)$ index.php?path=$1/$2&params=$3 [B,QSA,L]
